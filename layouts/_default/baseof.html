@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="da">
+<head>
+{{- partial "head.html" . }}
+</head>
+<body>
+<a class="skip-link" href="#main-content">Spring til indhold</a>
+{{- partial "header.html" . }}
+<main id="main-content">
+{{- block "main" . }}{{ end }}
+</main>
+{{- partial "cta-band.html" . }}
+{{- partial "footer.html" . }}
+{{- $navJS := resources.Get "js/nav.js" }}
+{{- with $navJS }}
+{{- $navJS = . | minify | fingerprint "sha384" }}
+<script src="{{ $navJS.RelPermalink }}" integrity="{{ $navJS.Data.Integrity }}" crossorigin="anonymous" defer></script>
+{{- end }}
+</body>
+</html>

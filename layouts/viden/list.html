@@ -1,0 +1,26 @@
+{{- define "main" }}
+<section class="shell section page-header">
+  <h1>{{ .Title }}</h1>
+  {{- with .Content }}
+  <div class="prose">{{ . }}</div>
+  {{- end }}
+</section>
+
+<section class="shell section">
+  <ul class="post-list">
+    {{- range .Pages.ByDate.Reverse }}
+    <li class="post-card">
+      <h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+      {{- if not .Date.IsZero }}
+      <p class="post-date"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date | time.Format ":date_long" }}</time></p>
+      {{- end }}
+      {{- $summary := .Params.summary }}
+      {{- if not $summary }}{{ $summary = .Summary }}{{ end }}
+      {{- with $summary }}
+      <p>{{ . }}</p>
+      {{- end }}
+    </li>
+    {{- end }}
+  </ul>
+</section>
+{{- end }}

@@ -1,0 +1,49 @@
+{{- define "main" }}
+<article class="shell section treatment">
+  <header class="page-header">
+    {{- with .Parent }}
+    <p class="eyebrow"><a href="{{ .RelPermalink }}">{{ .Title }}</a></p>
+    {{- end }}
+    <h1>{{ .Title }}</h1>
+    {{- $summary := .Params.summary }}
+    {{- if not $summary }}{{ $summary = .Summary }}{{ end }}
+    {{- with $summary }}
+    <p class="lede">{{ . }}</p>
+    {{- end }}
+  </header>
+
+  {{- with .Params.image }}
+  <img class="treatment-media" src="{{ . | relURL }}" width="494" height="292"
+       alt="{{ $.Params.image_alt | default "" }}" loading="lazy" decoding="async">
+  {{- end }}
+
+  {{- $hasSymptoms := isset .Params "symptoms" }}
+  {{- $duration := .Params.duration }}
+  {{- if or $hasSymptoms $duration }}
+  <div class="treatment-meta">
+    {{- with .Params.symptoms }}
+    <ul class="chips">
+      {{- range . }}
+      <li class="chip">{{ . }}</li>
+      {{- end }}
+    </ul>
+    {{- end }}
+    {{- with $duration }}
+    <p class="card-duration">Varighed: {{ . }}</p>
+    {{- end }}
+  </div>
+  {{- end }}
+
+  {{- $cta := .Params.cta | default "Book tid" }}
+  {{- $bookingURL := "/kontakt/" }}
+  {{- $bookingExternal := false }}
+  {{- with .Site.Params.booking_url }}{{ $bookingURL = . }}{{ $bookingExternal = true }}{{ end }}
+  <a class="btn btn-primary" href="{{ $bookingURL }}"{{ if $bookingExternal }} target="_blank" rel="noopener noreferrer"{{ end }}>{{ $cta }}</a>
+
+  {{- with .Content }}
+  <div class="prose">
+    {{ . }}
+  </div>
+  {{- end }}
+</article>
+{{- end }}

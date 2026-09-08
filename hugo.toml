@@ -1,0 +1,109 @@
+baseURL = "https://www.sanselig.dk/"
+languageCode = "da-dk"
+defaultContentLanguage = "da"
+title = "sanselig.dk — zoneterapi på Islands Brygge"
+copyright = "Sanselig.dk ApS"
+
+# We author every page/section/list/home template ourselves under layouts/.
+# No RSS/taxonomies are part of the information architecture, so they are
+# switched off to keep the build output lean and warning-free. The sitemap
+# stays enabled (spec requirement) and uses Hugo's built-in template.
+disableKinds = ["RSS", "taxonomy", "term"]
+enableRobotsTXT = false # static/robots.txt is hand-written instead
+
+summaryLength = 30
+
+[pagination]
+  pagerSize = 12
+
+[sitemap]
+  changeFreq = "monthly"
+  priority = 0.5
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      # Raw/unsafe HTML in Markdown stays disabled — content authors use
+      # shortcodes (see layouts/shortcodes/) for anything beyond prose.
+      unsafe = false
+  [markup.tableOfContents]
+    startLevel = 2
+    endLevel = 3
+
+# ---------------------------------------------------------------------------
+# Header navigation (spec: Behandlinger · Priser · Om Lise · Viden · Kontakt)
+# "Book tid" is rendered separately as the header CTA button, not as a menu
+# entry — see layouts/partials/header.html.
+# ---------------------------------------------------------------------------
+[menus]
+  [[menus.main]]
+    name   = "Behandlinger"
+    url    = "/behandlinger/"
+    weight = 10
+  [[menus.main]]
+    name   = "Priser"
+    url    = "/priser/"
+    weight = 20
+  [[menus.main]]
+    name   = "Om Lise"
+    url    = "/om-lise/"
+    weight = 30
+  [[menus.main]]
+    name   = "Viden"
+    url    = "/viden/"
+    weight = 40
+  [[menus.main]]
+    name   = "Kontakt"
+    url    = "/kontakt/"
+    weight = 50
+
+# ---------------------------------------------------------------------------
+# Site-wide business data. Every value here is taken from the client's own
+# live site (www.sanselig.dk) or her WordPress draft — nothing is invented.
+# Values still genuinely unknown are empty strings; templates hide the
+# corresponding element rather than rendering a placeholder.
+# ---------------------------------------------------------------------------
+[params]
+  business_name = "sanselig.dk"
+  legal_name    = "sanselig.dk ApS"
+  owner_name    = "Lise Breusch Klinkby"
+  owner_title   = "Klinikindehaver og RAB-registreret zoneterapeut"
+  owner_education = "Naturmedicinsk Kursuscenter, Christianshavn"
+  tagline       = "Zoneterapi til hele familien på Islands Brygge"
+  since_year    = "2007"
+  clinic_since  = "2019"
+
+  address_street   = "Gunløgsgade 3, kl."
+  address_area     = "Islands Brygge"
+  address_postcode = "2300"
+  address_city     = "København S"
+  address_country  = "DK"
+  area_served      = "København"
+
+  telefon         = "40564201"
+  telefon_display = "40 56 42 01"
+  telefon_tel     = "+4540564201"
+  email           = "mail@sanselig.dk"
+  mobilepay       = "616771"
+
+  facebook_url  = "https://www.facebook.com/sanselig.dk"
+  instagram_url = "https://www.instagram.com/sanselig.dk_zoneterapi"
+
+  # Refund/insurance eligibility, quoted from her own booking page.
+  tilskud = "Medlemmer af Sygeforsikringen \"danmark\" kan få tilskud efter lægeligt stillet diagnose. Det samme gælder de fleste sundhedsforsikringer."
+
+  # Cancellation terms, quoted from her FAQ.
+  afbud_timer = "8"
+  afbud_gebyr = "300"
+
+  # Working pattern, quoted from her FAQ. Not a published opening-hours table —
+  # she books by calendar — so it is phrased as she phrases it.
+  arbejdsdage = "Jeg arbejder oftest mandag–fredag og tager enkelte weekenddage, når det passer ind."
+
+  # Site-wide notice from her live booking page. Set to "" to remove the banner.
+  driftsnotits = "Klinikken har begrænsede åbningstider i hele 2026. Skriv eller ring, så finder vi en tid — eller kom på ventelisten."
+
+  # TODO: her online booking system has no public URL yet (her old "bestil tid"
+  # page reads "Denne side skal slettes når der kommer booking"). Until a real
+  # booking link exists, every "Book tid" button falls back to /kontakt/.
+  booking_url = ""

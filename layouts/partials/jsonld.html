@@ -1,0 +1,80 @@
+{{- /*
+  Emits a JSON string (or nothing when no schema applies to this page) — it does
+  NOT print a <script> tag itself. layouts/partials/head.html consumes the
+  output both to compute a CSP script-src hash and to print the actual
+  <script type="application/ld+json"> element, so the two always stay
+  byte-identical.
+*/ -}}
+{{- $p := .Site.Params -}}
+{{- $out := "" -}}
+
+{{- if .IsHome -}}
+  {{- $addr := dict
+      "@type" "PostalAddress"
+      "streetAddress" $p.address_street
+      "addressLocality" $p.address_city
+      "postalCode" $p.address_postcode
+      "addressCountry" $p.address_country
+  -}}
+  {{- $data := dict
+      "@context" "https://schema.org"
+      "@type" "HealthAndBeautyBusiness"
+      "name" $p.business_name
+      "legalName" $p.legal_name
+      "url" .Site.BaseURL
+      "image" (printf "%simg/hero-zoneterapi.jpg" .Site.BaseURL)
+      "address" $addr
+      "areaServed" $p.area_served
+      "priceRange" "530–675 DKK"
+      "currenciesAccepted" "DKK"
+      "sameAs" (slice $p.facebook_url $p.instagram_url)
+      "founder" (dict "@type" "Person" "name" $p.owner_name)
+  -}}
+  {{- with .Description }}{{ $data = merge $data (dict "description" .) }}{{ end -}}
+  {{- with $p.telefon_tel }}{{ $data = merge $data (dict "telephone" .) }}{{ end -}}
+  {{- with $p.email }}{{ $data = merge $data (dict "email" .) }}{{ end -}}
+  {{- $out = $data | jsonify (dict "indent" "  ") -}}
+{{- end -}}
+
+{{- $base := "" -}}
+{{- with .File }}{{ $base = .ContentBaseName }}{{ end -}}
+{{- if eq $base "om-lise" -}}
+  {{- $data := dict
+      "@context" "https://schema.org"
+      "@type" "Person"
+      "name" $p.owner_name
+      "jobTitle" $p.owner_title
+      "url" .Permalink
+      "worksFor" (dict "@type" "HealthAndBeautyBusiness" "name" $p.business_name "url" .Site.BaseURL)
+      "alumniOf" (dict "@type" "EducationalOrganization" "name" $p.owner_education)
+      "sameAs" (slice $p.facebook_url $p.instagram_url)
+  -}}
+  {{- with .Description }}{{ $data = merge $data (dict "description" .) }}{{ end -}}
+  {{- $out = $data | jsonify (dict "indent" "  ") -}}
+{{- end -}}
+
+{{- $base := "" -}}
+{{- with .File }}{{ $base = .ContentBaseName }}{{ end -}}
+{{- if eq $base "priser" -}}
+  {{- $items := slice -}}
+  {{- range $i, $r := .Site.Data.priser -}}
+    {{- $items = $items | append (dict
+        "@type" "Offer"
+        "position" (add $i 1)
+        "name" $r.treatment
+        "price" $r.price
+        "priceCurrency" "DKK"
+        "description" (printf "%s — %s" $r.duration $r.note)
+    ) -}}
+  {{- end -}}
+  {{- $data := dict
+      "@context" "https://schema.org"
+      "@type" "OfferCatalog"
+      "name" "Behandlinger og priser"
+      "url" .Permalink
+      "itemListElement" $items
+  -}}
+  {{- $out = $data | jsonify (dict "indent" "  ") -}}
+{{- end -}}
+
+{{- $out -}}
