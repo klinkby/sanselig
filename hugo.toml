@@ -1,4 +1,4 @@
-baseURL = "https://www.sanselig.dk/"
+baseURL = "https://beta.sanselig.dk/"
 languageCode = "da-dk"
 defaultContentLanguage = "da"
 title = "sanselig.dk — zoneterapi på Islands Brygge"
@@ -9,7 +9,7 @@ copyright = "Sanselig.dk ApS"
 # switched off to keep the build output lean and warning-free. The sitemap
 # stays enabled (spec requirement) and uses Hugo's built-in template.
 disableKinds = ["RSS", "taxonomy", "term"]
-enableRobotsTXT = false # static/robots.txt is hand-written instead
+enableRobotsTXT = true # genereres af layouts/robots.txt
 
 summaryLength = 30
 
@@ -64,6 +64,10 @@ summaryLength = 30
 # corresponding element rather than rendering a placeholder.
 # ---------------------------------------------------------------------------
 [params]
+  # Beta-sitet må ikke indekseres — det ville konkurrere med det live
+  # sanselig.dk om de samme tekster. Sæt til false ved skift til www.
+  noindex = true
+
   business_name = "sanselig.dk"
   legal_name    = "sanselig.dk ApS"
   owner_name    = "Lise Breusch Klinkby"

@@ -51,8 +51,36 @@ ingen tredjepartsdomæner — siden henter intet udefra.
 `.github/workflows/build.yml` bygger hver pull request og fejler ved advarsler.
 
 Før første udrulning skal **Settings → Pages → Source** sættes til
-**GitHub Actions**. `static/CNAME` peger domænet på `www.sanselig.dk`; DNS skal
-pege `www` på GitHub Pages.
+**GitHub Actions**.
+
+### Domæne
+
+Sitet ligger indtil videre på **beta.sanselig.dk**, så det live sanselig.dk
+kan køre videre urørt imens.
+
+DNS hos domæneudbyderen — én post:
+
+```
+beta   CNAME   klinkby.github.io.
+```
+
+(Underdomæner bruger en CNAME-post. Kun et apex-domæne som `sanselig.dk`
+kræver A/AAAA-poster mod GitHubs adresser.)
+
+Beta-sitet er sat til **ikke at blive indekseret**: `noindex = true` i
+`hugo.toml` giver både `Disallow: /` i robots.txt og et `noindex`-metatag.
+Uden det ville beta konkurrere med det live site om de samme tekster.
+
+**Ved skift til www senere:**
+
+1. `static/CNAME` → `www.sanselig.dk`
+2. `baseURL` i `hugo.toml` → `https://www.sanselig.dk/`
+3. `noindex` → `false`
+4. DNS: `www CNAME klinkby.github.io.`
+5. Slå **Enforce HTTPS** til i Settings → Pages, når certifikatet er udstedt
+
+GitHub Pages tillader kun ét brugerdefineret domæne pr. repository, så beta
+og www kan ikke køre samtidig fra dette repo.
 
 ## Mangler afklaring
 
