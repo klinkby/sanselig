@@ -1,0 +1,15 @@
+User-agent: *
+Allow: /my/location_ical/
+Allow: /my/ical/
+Disallow: /_account/
+Disallow: /_api/*
+Disallow: /_admin/
+Disallow: /_error/
+Disallow: /booking/confirm
+Disallow: /my/
+Disallow: /shop/checkout
+Disallow: /shop/shipping
+Disallow: /shop/togateway
+Disallow: /shop/paid
+Disallow: /shop/cancel
+Sitemap: /sitemap.xml
