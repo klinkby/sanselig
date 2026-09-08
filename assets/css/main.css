@@ -144,7 +144,25 @@ hr { border: 0; border-top: 1px solid var(--line); margin: 2.5rem 0; }
   font-size: 1rem;
   text-decoration: none;
   border: 1px solid transparent;
-  transition: background-color 0.15s ease, color 0.15s ease;
+  /* Lift on hover: a small rise and a soft shadow tinted with the brand green
+     rather than black, which keeps the warm ground from going grey. */
+  box-shadow: 0 0 0 rgb(74 107 30 / 0%);
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s cubic-bezier(0.22, 0.61, 0.36, 1),
+    box-shadow 0.2s ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgb(74 107 30 / 22%);
+}
+
+.btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgb(74 107 30 / 18%);
+  transition-duration: 0.05s;
 }
 
 .btn-primary { background: var(--action); color: #fff; }
@@ -469,6 +487,9 @@ hr { border: 0; border-top: 1px solid var(--line); margin: 2.5rem 0; }
 
 .cta-band .btn-primary { background: var(--surface); color: var(--action); }
 .cta-band .btn-primary:hover { background: var(--sand); color: var(--action-hover); }
+/* The green-tinted shadow disappears against the green band, so go darker here. */
+.cta-band .btn:hover { box-shadow: 0 6px 18px rgb(27 40 11 / 28%); }
+.cta-band .btn:active { box-shadow: 0 2px 6px rgb(27 40 11 / 24%); }
 .cta-band :focus-visible { outline-color: #fff; }
 
 /* ---------- footer ---------- */
@@ -518,4 +539,6 @@ hr { border: 0; border-top: 1px solid var(--line); margin: 2.5rem 0; }
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+  /* Drop the movement entirely — the shadow still marks the hover. */
+  .btn:hover, .btn:active { transform: none; }
 }
