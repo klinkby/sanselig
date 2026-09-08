@@ -137,6 +137,7 @@ hr { border: 0; border-top: 1px solid var(--line); margin: 2.5rem 0; }
 /* ---------- buttons ---------- */
 
 .btn {
+  position: relative;
   display: inline-block;
   padding: 0.75rem 1.4rem;
   border-radius: 999px;
@@ -144,29 +145,67 @@ hr { border: 0; border-top: 1px solid var(--line); margin: 2.5rem 0; }
   font-size: 1rem;
   text-decoration: none;
   border: 1px solid transparent;
-  /* Lift on hover: a small rise and a soft shadow tinted with the brand green
-     rather than black, which keeps the warm ground from going grey. */
-  box-shadow: 0 0 0 rgb(74 107 30 / 0%);
-  transition:
-    background-color 0.2s ease,
-    color 0.2s ease,
-    transform 0.2s cubic-bezier(0.22, 0.61, 0.36, 1),
-    box-shadow 0.2s ease;
+  overflow: hidden; /* clips the sheen to the pill */
+  transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.25s ease;
 }
 
-.btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgb(74 107 30 / 22%);
+/* The light bar. Parked off the left edge; on hover it pans across the face.
+   Angled slightly so it reads as light travelling over a curved surface
+   rather than a rectangle sliding past. */
+.btn-primary::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  background: linear-gradient(
+    100deg,
+    transparent 30%,
+    rgb(255 255 255 / 20%) 50%,
+    transparent 70%
+  );
+  transform: translateX(-105%);
+  pointer-events: none;
 }
 
-.btn:active {
-  transform: translateY(0);
-  box-shadow: 0 2px 6px rgb(74 107 30 / 18%);
-  transition-duration: 0.05s;
+/* Near-constant speed: light from a moving source travels evenly, so an
+   ease-out curve makes the bar arrive and vanish before the eye follows it.
+   Only the tail is softened. No transition in the resting state, so leaving
+   the button snaps the bar back to the left instead of sweeping in reverse. */
+.btn-primary:hover::after,
+.btn-primary:focus-visible::after {
+  transform: translateX(105%);
+  transition: transform 1.05s cubic-bezier(0.36, 0.1, 0.5, 0.94);
 }
 
-.btn-primary { background: var(--action); color: #fff; }
-.btn-primary:hover { background: var(--action-hover); color: #fff; }
+/* Domed face: a light top edge and a shaded lower half give the pill its
+   volume, so the sheen has a surface to travel over. */
+.btn-primary {
+  background-color: var(--action);
+  background-image: linear-gradient(
+    to bottom,
+    rgb(255 255 255 / 12%),
+    rgb(0 0 0 / 8%)
+  );
+  color: #fff;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 22%),
+    inset 0 -1px 0 rgb(0 0 0 / 12%),
+    0 1px 2px rgb(43 42 39 / 12%);
+}
+
+.btn-primary:hover {
+  background-color: var(--action-hover);
+  color: #fff;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 26%),
+    inset 0 -1px 0 rgb(0 0 0 / 14%),
+    0 3px 10px rgb(74 107 30 / 24%);
+}
+
+.btn-primary:active {
+  box-shadow:
+    inset 0 2px 4px rgb(0 0 0 / 18%),
+    0 1px 2px rgb(43 42 39 / 10%);
+}
 
 .btn-secondary {
   background: transparent;
@@ -485,11 +524,37 @@ hr { border: 0; border-top: 1px solid var(--line); margin: 2.5rem 0; }
   font-size: var(--step-2);
 }
 
-.cta-band .btn-primary { background: var(--surface); color: var(--action); }
-.cta-band .btn-primary:hover { background: var(--sand); color: var(--action-hover); }
-/* The green-tinted shadow disappears against the green band, so go darker here. */
-.cta-band .btn:hover { box-shadow: 0 6px 18px rgb(27 40 11 / 28%); }
-.cta-band .btn:active { box-shadow: 0 2px 6px rgb(27 40 11 / 24%); }
+/* Inverted on the green band: white face, so the sheen and the shading have to
+   flip to green — a white light bar over a white button is invisible. */
+.cta-band .btn-primary {
+  background-color: var(--surface);
+  background-image: linear-gradient(to bottom, rgb(255 255 255 / 60%), rgb(74 107 30 / 6%));
+  color: var(--action);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 80%),
+    0 1px 2px rgb(27 40 11 / 20%);
+}
+
+.cta-band .btn-primary::after {
+  background: linear-gradient(
+    100deg,
+    transparent 38%,
+    rgb(74 107 30 / 14%) 50%,
+    transparent 62%
+  );
+}
+
+.cta-band .btn-primary:hover {
+  background-color: var(--sand);
+  color: var(--action-hover);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 80%),
+    0 3px 12px rgb(27 40 11 / 30%);
+}
+
+.cta-band .btn-primary:active {
+  box-shadow: inset 0 2px 4px rgb(27 40 11 / 16%);
+}
 .cta-band :focus-visible { outline-color: #fff; }
 
 /* ---------- footer ---------- */
@@ -539,6 +604,6 @@ hr { border: 0; border-top: 1px solid var(--line); margin: 2.5rem 0; }
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
-  /* Drop the movement entirely — the shadow still marks the hover. */
-  .btn:hover, .btn:active { transform: none; }
+  /* No panning light — the colour and shadow change still mark the hover. */
+  .btn-primary::after { display: none; }
 }
