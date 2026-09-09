@@ -8,41 +8,30 @@
     alt       (required, may be "")
     class     (optional) class on the <img>
     widths    (optional) slice of ints — when set, a responsive srcset is
-              built at each width for both formats
-    sizes     (optional) sizes attribute, required when widths is set
+              built at each width for both formats; otherwise a single
+              native-size WebP + original is rendered
+    sizes     (optional) sizes attribute, only meaningful together with widths
     loading, decoding, fetchpriority (optional) passed straight through
 */ -}}
 {{- $path := .path -}}
 {{- $img := resources.Get $path -}}
 {{- if not $img }}{{ errorf "picture.html: resource %q not found" $path }}{{ end -}}
-{{- $widths := .widths -}}
+{{- $widths := .widths | default (slice $img.Width) -}}
+{{- $sizes := .sizes -}}
 {{- $class := .class -}}
 {{- $loading := .loading -}}
 {{- $decoding := .decoding -}}
 {{- $fetchpriority := .fetchpriority -}}
 
-{{- if $widths -}}
-  {{- $sizes := .sizes -}}
-  {{- $webpSet := slice -}}
-  {{- $origSet := slice -}}
-  {{- $fallback := $img -}}
-  {{- range $widths -}}
-    {{- $w := . -}}
-    {{- $webp := $img.Resize (printf "%dx webp q75" $w) -}}
-    {{- $webpSet = $webpSet | append (printf "%s %dw" $webp.RelPermalink $w) -}}
-    {{- $orig := $img.Resize (printf "%dx q75" $w) -}}
-    {{- $origSet = $origSet | append (printf "%s %dw" $orig.RelPermalink $w) -}}
-    {{- if eq $w (index $widths (sub (len $widths) 1)) }}{{ $fallback = $orig }}{{ end -}}
-  {{- end -}}
+{{- $webpSet := partial "webp-srcset.html" (dict "path" $path "widths" $widths) -}}
+{{- $origSet := slice -}}
+{{- range $widths -}}
+  {{- $orig := $img.Resize (printf "%dx q75" .) -}}
+  {{- $origSet = $origSet | append (printf "%s %dw" $orig.RelPermalink .) -}}
+{{- end -}}
+{{- $fallback := $img.Resize (printf "%dx q75" (index $widths (sub (len $widths) 1))) -}}
 <picture>
-  <source type="image/webp" srcset="{{ delimit $webpSet ", " }}" sizes="{{ $sizes }}">
-  <source type="{{ $img.MediaType }}" srcset="{{ delimit $origSet ", " }}" sizes="{{ $sizes }}">
+  <source type="image/webp" srcset="{{ delimit $webpSet ", " }}"{{ with $sizes }} sizes="{{ . }}"{{ end }}>
+  <source type="{{ $img.MediaType }}" srcset="{{ delimit $origSet ", " }}"{{ with $sizes }} sizes="{{ . }}"{{ end }}>
   <img src="{{ $fallback.RelPermalink }}" width="{{ $img.Width }}" height="{{ $img.Height }}" alt="{{ .alt }}"{{ with $class }} class="{{ . }}"{{ end }}{{ with $loading }} loading="{{ . }}"{{ end }}{{ with $decoding }} decoding="{{ . }}"{{ end }}{{ with $fetchpriority }} fetchpriority="{{ . }}"{{ end }}>
 </picture>
-{{- else -}}
-  {{- $webp := $img.Resize (printf "%dx webp q75" $img.Width) -}}
-<picture>
-  <source type="image/webp" srcset="{{ $webp.RelPermalink }}">
-  <img src="{{ $img.RelPermalink }}" width="{{ $img.Width }}" height="{{ $img.Height }}" alt="{{ .alt }}"{{ with $class }} class="{{ . }}"{{ end }}{{ with $loading }} loading="{{ . }}"{{ end }}{{ with $decoding }} decoding="{{ . }}"{{ end }}{{ with $fetchpriority }} fetchpriority="{{ . }}"{{ end }}>
-</picture>
-{{- end -}}

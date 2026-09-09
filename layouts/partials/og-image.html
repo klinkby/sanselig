@@ -1,0 +1,7 @@
+{{- /*
+  The hero photo resized for use as og:image/twitter:image/JSON-LD image —
+  identical on every page, so head.html and jsonld.html both fetch it via
+  partialCached and Hugo resizes it once for the whole build.
+*/ -}}
+{{- $img := resources.Get (partial "hero.html" .).path -}}
+{{- return $img.Resize "1200x q75" -}}

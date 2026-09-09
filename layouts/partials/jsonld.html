@@ -9,8 +9,7 @@
 {{- $out := "" -}}
 
 {{- if .IsHome -}}
-  {{- $heroImg := resources.Get "img/hero-zoneterapi.jpg" -}}
-  {{- $ogImg := $heroImg.Resize "1200x q75" -}}
+  {{- $ogImg := partialCached "og-image.html" . "og-image" -}}
   {{- $addr := dict
       "@type" "PostalAddress"
       "streetAddress" $p.address_street

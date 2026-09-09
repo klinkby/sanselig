@@ -38,9 +38,13 @@
 {{- end }}
 <link rel="canonical" href="{{ .Permalink }}">
 
-{{- /* Warm the LCP hero image as early as possible; only the home page has one. */}}
+{{- /* Warm the LCP hero image as early as possible; only the home page has one.
+       Widths/sizes/srcset come from the same partials index.html uses to build
+       the <picture> itself, so the two can never list different images. */}}
 {{- if .IsHome }}
-<link rel="preload" as="image" imagesrcset="/img/webp/hero-zoneterapi-480.webp 480w, /img/webp/hero-zoneterapi-800.webp 800w, /img/webp/hero-zoneterapi-1200.webp 1200w, /img/webp/hero-zoneterapi-1600.webp 1600w" imagesizes="(min-width: 52rem) 520px, 100vw" type="image/webp">
+  {{- $hero := partial "hero.html" . }}
+  {{- $webpSet := partial "webp-srcset.html" (dict "path" $hero.path "widths" $hero.widths) }}
+<link rel="preload" as="image" imagesrcset="{{ delimit $webpSet ", " }}" imagesizes="{{ $hero.sizes }}" type="image/webp">
 {{- end }}
 
 <meta property="og:type" content="{{ if .IsHome }}website{{ else }}article{{ end }}">
@@ -51,7 +55,7 @@
 <meta property="og:url" content="{{ .Permalink }}">
 <meta property="og:site_name" content="{{ $bizName }}">
 <meta property="og:locale" content="da_DK">
-{{- $ogImg := (resources.Get "img/hero-zoneterapi.jpg").Resize "1200x q75" }}
+{{- $ogImg := partialCached "og-image.html" . "og-image" }}
 <meta property="og:image" content="{{ $ogImg.RelPermalink | absURL }}">
 <meta property="og:image:alt" content="Hænder der giver zoneterapi på en fod">
 

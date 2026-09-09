@@ -1,0 +1,11 @@
+{{- /*
+  Single source of truth for the home page hero image's responsive config —
+  used by layouts/index.html (the <picture> itself) and head.html (the
+  matching preload), so the two can never list different widths/sizes.
+  Returns a dict: path, widths, sizes.
+*/ -}}
+{{- return (dict
+  "path" "img/hero-zoneterapi.jpg"
+  "widths" (slice 480 800 1200 1600)
+  "sizes" "(min-width: 52rem) 520px, 100vw"
+) -}}

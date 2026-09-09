@@ -20,11 +20,12 @@
       </div>
     </div>
     <div class="hero-media">
+      {{- $hero := partial "hero.html" . }}
       {{- partial "picture.html" (dict
-        "path" "img/hero-zoneterapi.jpg"
+        "path" $hero.path
         "alt" "Hænder der giver zoneterapi på en fod"
-        "widths" (slice 480 800 1200 1600)
-        "sizes" "(min-width: 52rem) 520px, 100vw"
+        "widths" $hero.widths
+        "sizes" $hero.sizes
         "fetchpriority" "high"
         "decoding" "async"
       ) }}
