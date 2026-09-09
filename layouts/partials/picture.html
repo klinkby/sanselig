@@ -1,0 +1,58 @@
+{{- /*
+  Renders a <picture> with a pre-built WebP source plus a fallback in the
+  original format. Hugo's standard build has no WebP encoder (that needs the
+  extended/cgo build this project deliberately avoids — see AGENTS.md), so
+  WebP variants are pre-generated offline into assets/img/webp/ mirroring the
+  source filenames; Hugo itself only resizes the fallback JPEG/PNG, which its
+  standard build supports natively.
+
+  Params:
+    path      (required) resource path under assets/, e.g. "img/hero.jpg"
+    alt       (required, may be "")
+    class     (optional) class on the <img>
+    widths    (optional) slice of ints — when set, a responsive srcset is
+              built at each width for both formats (requires pre-generated
+              "<name>-<width>.webp" files in assets/img/webp/)
+    sizes     (optional) sizes attribute, required when widths is set
+    loading, decoding, fetchpriority (optional) passed straight through
+*/ -}}
+{{- $path := .path -}}
+{{- $img := resources.Get $path -}}
+{{- if not $img }}{{ errorf "picture.html: resource %q not found" $path }}{{ end -}}
+{{- $dir := path.Dir $path -}}
+{{- $stem := path.BaseName $path -}}
+{{- $widths := .widths -}}
+{{- $class := .class -}}
+{{- $loading := .loading -}}
+{{- $decoding := .decoding -}}
+{{- $fetchpriority := .fetchpriority -}}
+
+{{- if $widths -}}
+  {{- $sizes := .sizes -}}
+  {{- $webpSet := slice -}}
+  {{- $origSet := slice -}}
+  {{- $fallback := $img -}}
+  {{- range $widths -}}
+    {{- $w := . -}}
+    {{- $webpPath := printf "%s/webp/%s-%d.webp" $dir $stem $w -}}
+    {{- $webpRes := resources.Get $webpPath -}}
+    {{- if not $webpRes }}{{ errorf "picture.html: missing pre-built %q" $webpPath }}{{ end -}}
+    {{- $webpSet = $webpSet | append (printf "%s %dw" $webpRes.RelPermalink $w) -}}
+    {{- $orig := $img.Resize (printf "%dx q75" $w) -}}
+    {{- $origSet = $origSet | append (printf "%s %dw" $orig.RelPermalink $w) -}}
+    {{- if eq $w (index $widths (sub (len $widths) 1)) }}{{ $fallback = $orig }}{{ end -}}
+  {{- end -}}
+<picture>
+  <source type="image/webp" srcset="{{ delimit $webpSet ", " }}" sizes="{{ $sizes }}">
+  <source type="{{ $img.MediaType }}" srcset="{{ delimit $origSet ", " }}" sizes="{{ $sizes }}">
+  <img src="{{ $fallback.RelPermalink }}" width="{{ $img.Width }}" height="{{ $img.Height }}" alt="{{ .alt }}"{{ with $class }} class="{{ . }}"{{ end }}{{ with $loading }} loading="{{ . }}"{{ end }}{{ with $decoding }} decoding="{{ . }}"{{ end }}{{ with $fetchpriority }} fetchpriority="{{ . }}"{{ end }}>
+</picture>
+{{- else -}}
+  {{- $webpPath := printf "%s/webp/%s.webp" $dir $stem -}}
+  {{- $webpRes := resources.Get $webpPath -}}
+  {{- if not $webpRes }}{{ errorf "picture.html: missing pre-built %q" $webpPath }}{{ end -}}
+<picture>
+  <source type="image/webp" srcset="{{ $webpRes.RelPermalink }}">
+  <img src="{{ $img.RelPermalink }}" width="{{ $img.Width }}" height="{{ $img.Height }}" alt="{{ .alt }}"{{ with $class }} class="{{ . }}"{{ end }}{{ with $loading }} loading="{{ . }}"{{ end }}{{ with $decoding }} decoding="{{ . }}"{{ end }}{{ with $fetchpriority }} fetchpriority="{{ . }}"{{ end }}>
+</picture>
+{{- end -}}

@@ -22,10 +22,32 @@ hugo --gc --minify # byg til public/
 | `data/anbefalinger.yaml` | Kundeudtalelser vist på forsiden                           |
 | `layouts/`           | Egne skabeloner. Der bruges intet eksternt tema                |
 | `assets/css/main.css`| Hele designsystemet i én fil                                   |
-| `static/img/`        | Billeder, hentet fra det eksisterende site                     |
+| `assets/img/`        | Billeder, hentet fra det eksisterende site                     |
+| `assets/img/webp/`   | Præ-genererede WebP-varianter af billederne ovenfor              |
 
 Indholdet stammer fra Lises egne sider — det nuværende www.sanselig.dk og
 WordPress-udkastet — og er redigeret, men ikke opdigtet.
+
+### Billeder
+
+Hugo køres i standardudgaven (ingen `extended`/cgo), som ikke kan kode WebP —
+kun afkode/skalere JPEG og PNG. Derfor ligger WebP-udgaver af hvert billede
+præ-genereret i `assets/img/webp/`, med samme filnavn (og `-<bredde>.webp` for
+dem der har flere størrelser). `layouts/partials/picture.html` sætter dem
+sammen til et `<picture>` med WebP først og JPEG/PNG som fallback; Hugo
+skalerer selv fallback-billedet i byggetrinnet.
+
+Nyt eller ændret billede i `assets/img/` skal have sin WebP-variant
+gendannet, fx:
+
+```python
+from PIL import Image
+im = Image.open("assets/img/nyt-billede.jpg").convert("RGB")
+im.save("assets/img/webp/nyt-billede.webp", "WEBP", quality=75, method=6)
+```
+
+— brug samme bredder som i den skabelon, der bruger billedet, hvis det skal
+have et `srcset` (se `hero-zoneterapi` i `layouts/index.html` som eksempel).
 
 ## Design
 

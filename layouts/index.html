@@ -20,8 +20,14 @@
       </div>
     </div>
     <div class="hero-media">
-      <img src="{{ "img/hero-zoneterapi.jpg" | relURL }}" width="1600" height="753"
-           alt="Hænder der giver zoneterapi på en fod" fetchpriority="high" decoding="async">
+      {{- partial "picture.html" (dict
+        "path" "img/hero-zoneterapi.jpg"
+        "alt" "Hænder der giver zoneterapi på en fod"
+        "widths" (slice 480 800 1200 1600)
+        "sizes" "(min-width: 52rem) 520px, 100vw"
+        "fetchpriority" "high"
+        "decoding" "async"
+      ) }}
     </div>
   </div>
 </section>

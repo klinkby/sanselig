@@ -62,6 +62,7 @@ a { color: var(--action); text-decoration-thickness: 1px; text-underline-offset:
 a:hover { color: var(--action-hover); }
 
 img { max-width: 100%; height: auto; display: block; }
+picture { display: contents; }
 
 hr { border: 0; border-top: 1px solid var(--line); margin: 2.5rem 0; }
 
