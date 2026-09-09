@@ -16,13 +16,13 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  HUGO_VERSION: 0.152.0
+  HUGO_VERSION: 0.165.0
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0 # .GitInfo og .Lastmod
 
@@ -33,7 +33,7 @@ jobs:
           sudo dpkg -i /tmp/hugo.deb
           hugo version
 
-      - uses: actions/configure-pages@v5
+      - uses: actions/configure-pages@v6
         id: pages
 
       - name: Byg site
@@ -42,7 +42,7 @@ jobs:
           TZ: Europe/Copenhagen
         run: hugo --gc --minify --baseURL "${{ steps.pages.outputs.base_url }}/"
 
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: ./public
 
@@ -53,5 +53,5 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - uses: actions/deploy-pages@v4
+      - uses: actions/deploy-pages@v5
         id: deployment
