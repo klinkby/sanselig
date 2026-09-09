@@ -9,6 +9,7 @@
 {{- $out := "" -}}
 
 {{- if .IsHome -}}
+  {{- $ogImg := partialCached "og-image.html" . "og-image" -}}
   {{- $addr := dict
       "@type" "PostalAddress"
       "streetAddress" $p.address_street
@@ -22,7 +23,7 @@
       "name" $p.business_name
       "legalName" $p.legal_name
       "url" .Site.BaseURL
-      "image" (printf "%simg/hero-zoneterapi.jpg" .Site.BaseURL)
+      "image" ($ogImg.RelPermalink | absURL)
       "address" $addr
       "areaServed" $p.area_served
       "priceRange" "530–675 DKK"

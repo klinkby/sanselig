@@ -5,8 +5,8 @@ Bygget med [Hugo](https://gohugo.io/) og udgivet på GitHub Pages.
 
 ## Kom i gang
 
-Kræver Hugo 0.152 eller nyere (standard-udgaven — der bruges ikke SCSS, så
-"extended" er ikke nødvendig).
+Kræver Hugo 0.152 eller nyere, **extended**-udgaven — den bruges til at kode
+billeder som WebP (se [Billeder](#billeder)); der bruges stadig ikke SCSS.
 
 ```bash
 hugo server -D     # udviklingsserver på http://localhost:1313
@@ -22,10 +22,27 @@ hugo --gc --minify # byg til public/
 | `data/anbefalinger.yaml` | Kundeudtalelser vist på forsiden                           |
 | `layouts/`           | Egne skabeloner. Der bruges intet eksternt tema                |
 | `assets/css/main.css`| Hele designsystemet i én fil                                   |
-| `static/img/`        | Billeder, hentet fra det eksisterende site                     |
+| `assets/img/`        | Billeder, hentet fra det eksisterende site                     |
 
 Indholdet stammer fra Lises egne sider — det nuværende www.sanselig.dk og
 WordPress-udkastet — og er redigeret, men ikke opdigtet.
+
+### Billeder
+
+Alle billeder ligger som JPEG/PNG i `assets/img/`. `layouts/partials/picture.html`
+kører dem gennem Hugos billedpipeline til et `<picture>` med WebP (Hugos
+native encoder, kræver `extended`) og original-formatet som fallback — intet
+manuelt trin. Skabeloner der skal vise et nyt billede, kalder blot partialen,
+fx:
+
+```gotemplate
+{{ partial "picture.html" (dict "path" "img/nyt-billede.jpg" "alt" "…") }}
+```
+
+Send `widths` (og `sizes`) med for et responsivt `srcset` — se
+`hero-zoneterapi` i `layouts/index.html` som eksempel. Markdown-billeder
+(`![alt](/img/x.jpg)`) går automatisk gennem samme partial via
+`layouts/_default/_markup/render-image.html`.
 
 ## Design
 

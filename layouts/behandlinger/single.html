@@ -13,8 +13,13 @@
   </header>
 
   {{- with .Params.image }}
-  <img class="treatment-media" src="{{ . | relURL }}" width="494" height="292"
-       alt="{{ $.Params.image_alt | default "" }}" loading="lazy" decoding="async">
+  {{- partial "picture.html" (dict
+    "path" .
+    "alt" ($.Params.image_alt | default "")
+    "class" "treatment-media"
+    "loading" "lazy"
+    "decoding" "async"
+  ) }}
   {{- end }}
 
   {{- $hasSymptoms := isset .Params "symptoms" }}

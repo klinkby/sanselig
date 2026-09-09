@@ -1,8 +1,11 @@
 <header class="site-header">
   <div class="shell header-inner">
     <a href="{{ .Site.Home.RelPermalink }}" class="brand">
-      <img src="{{ "img/logo-sanselig.png" | relURL }}" width="426" height="94"
-           alt="{{ .Site.Params.business_name | default .Site.Title }}">
+      {{- partial "picture.html" (dict
+        "path" "img/logo-sanselig.png"
+        "alt" (.Site.Params.business_name | default .Site.Title)
+        "fetchpriority" "high"
+      ) }}
     </a>
 
     <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="primary-nav">

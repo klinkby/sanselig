@@ -1,0 +1,8 @@
+{{- /* Markdown images render as WebP + fallback via the shared picture partial. */ -}}
+{{- $path := strings.TrimPrefix "/" .Destination -}}
+{{- partial "picture.html" (dict
+  "path" $path
+  "alt" .Text
+  "loading" "lazy"
+  "decoding" "async"
+) }}

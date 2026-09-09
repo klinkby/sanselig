@@ -38,6 +38,15 @@
 {{- end }}
 <link rel="canonical" href="{{ .Permalink }}">
 
+{{- /* Warm the LCP hero image as early as possible; only the home page has one.
+       Widths/sizes/srcset come from the same partials index.html uses to build
+       the <picture> itself, so the two can never list different images. */}}
+{{- if .IsHome }}
+  {{- $hero := partial "hero.html" . }}
+  {{- $webpSet := partial "webp-srcset.html" (dict "path" $hero.path "widths" $hero.widths) }}
+<link rel="preload" as="image" imagesrcset="{{ delimit $webpSet ", " }}" imagesizes="{{ $hero.sizes }}" type="image/webp">
+{{- end }}
+
 <meta property="og:type" content="{{ if .IsHome }}website{{ else }}article{{ end }}">
 <meta property="og:title" content="{{ $title }}">
 {{- with $description }}
@@ -46,11 +55,12 @@
 <meta property="og:url" content="{{ .Permalink }}">
 <meta property="og:site_name" content="{{ $bizName }}">
 <meta property="og:locale" content="da_DK">
-<meta property="og:image" content="{{ "img/hero-zoneterapi.jpg" | absURL }}">
+{{- $ogImg := partialCached "og-image.html" . "og-image" }}
+<meta property="og:image" content="{{ $ogImg.RelPermalink | absURL }}">
 <meta property="og:image:alt" content="Hænder der giver zoneterapi på en fod">
 
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="{{ "img/hero-zoneterapi.jpg" | absURL }}">
+<meta name="twitter:image" content="{{ $ogImg.RelPermalink | absURL }}">
 <meta name="twitter:title" content="{{ $title }}">
 {{- with $description }}
 <meta name="twitter:description" content="{{ . }}">

@@ -1,0 +1,17 @@
+{{- /*
+  Builds a WebP srcset for one resource at a list of widths. Both picture.html
+  and head.html's hero preload need the exact same generated URLs, so they
+  share this instead of each re-deriving Hugo's output filenames by hand.
+
+  Params: path (resource path under assets/), widths (slice of ints)
+  Returns: a slice of "url Nw" strings, ready for delimit … ", "
+*/ -}}
+{{- $img := resources.Get .path -}}
+{{- if not $img }}{{ errorf "webp-srcset.html: resource %q not found" .path }}{{ end -}}
+{{- $set := slice -}}
+{{- range .widths -}}
+  {{- $w := . -}}
+  {{- $webp := $img.Resize (printf "%dx webp q75" $w) -}}
+  {{- $set = $set | append (printf "%s %dw" $webp.RelPermalink $w) -}}
+{{- end -}}
+{{- return $set -}}
