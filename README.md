@@ -5,8 +5,8 @@ Bygget med [Hugo](https://gohugo.io/) og udgivet på GitHub Pages.
 
 ## Kom i gang
 
-Kræver Hugo 0.152 eller nyere (standard-udgaven — der bruges ikke SCSS, så
-"extended" er ikke nødvendig).
+Kræver Hugo 0.152 eller nyere, **extended**-udgaven — den bruges til at kode
+billeder som WebP (se [Billeder](#billeder)); der bruges stadig ikke SCSS.
 
 ```bash
 hugo server -D     # udviklingsserver på http://localhost:1313
@@ -23,31 +23,26 @@ hugo --gc --minify # byg til public/
 | `layouts/`           | Egne skabeloner. Der bruges intet eksternt tema                |
 | `assets/css/main.css`| Hele designsystemet i én fil                                   |
 | `assets/img/`        | Billeder, hentet fra det eksisterende site                     |
-| `assets/img/webp/`   | Præ-genererede WebP-varianter af billederne ovenfor              |
 
 Indholdet stammer fra Lises egne sider — det nuværende www.sanselig.dk og
 WordPress-udkastet — og er redigeret, men ikke opdigtet.
 
 ### Billeder
 
-Hugo køres i standardudgaven (ingen `extended`/cgo), som ikke kan kode WebP —
-kun afkode/skalere JPEG og PNG. Derfor ligger WebP-udgaver af hvert billede
-præ-genereret i `assets/img/webp/`, med samme filnavn (og `-<bredde>.webp` for
-dem der har flere størrelser). `layouts/partials/picture.html` sætter dem
-sammen til et `<picture>` med WebP først og JPEG/PNG som fallback; Hugo
-skalerer selv fallback-billedet i byggetrinnet.
+Alle billeder ligger som JPEG/PNG i `assets/img/`. `layouts/partials/picture.html`
+kører dem gennem Hugos billedpipeline til et `<picture>` med WebP (Hugos
+native encoder, kræver `extended`) og original-formatet som fallback — intet
+manuelt trin. Skabeloner der skal vise et nyt billede, kalder blot partialen,
+fx:
 
-Nyt eller ændret billede i `assets/img/` skal have sin WebP-variant
-gendannet, fx:
-
-```python
-from PIL import Image
-im = Image.open("assets/img/nyt-billede.jpg").convert("RGB")
-im.save("assets/img/webp/nyt-billede.webp", "WEBP", quality=75, method=6)
+```gotemplate
+{{ partial "picture.html" (dict "path" "img/nyt-billede.jpg" "alt" "…") }}
 ```
 
-— brug samme bredder som i den skabelon, der bruger billedet, hvis det skal
-have et `srcset` (se `hero-zoneterapi` i `layouts/index.html` som eksempel).
+Send `widths` (og `sizes`) med for et responsivt `srcset` — se
+`hero-zoneterapi` i `layouts/index.html` som eksempel. Markdown-billeder
+(`![alt](/img/x.jpg)`) går automatisk gennem samme partial via
+`layouts/_default/_markup/render-image.html`.
 
 ## Design
 

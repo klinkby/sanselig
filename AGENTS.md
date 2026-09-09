@@ -10,7 +10,9 @@ hugo --gc --minify                  # build to public/
 hugo --gc --minify --printPathWarnings   # must be warning-free before commit
 ```
 
-Hugo 0.152+, **standard edition** — no SCSS, no `extended` features. Plain CSS only.
+Hugo 0.152+, **extended edition** — needed for its native WebP image encoding
+(`layouts/partials/picture.html`). Still no SCSS/Dart Sass: plain CSS only, that's a
+separate feature this project doesn't use.
 
 ## Layout
 
