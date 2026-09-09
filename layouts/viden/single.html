@@ -1,0 +1,16 @@
+{{- define "main" }}
+<article class="shell section prose">
+  <header class="page-header">
+    <h1>{{ .Title }}</h1>
+    {{- if not .Date.IsZero }}
+    <p class="post-date"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date | time.Format ":date_long" }}</time></p>
+    {{- end }}
+  </header>
+
+  {{ .Content }}
+
+  {{- with .Parent }}
+  <p><a class="link-more" href="{{ .RelPermalink }}">← Alle guides</a></p>
+  {{- end }}
+</article>
+{{- end }}

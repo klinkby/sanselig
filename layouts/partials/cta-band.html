@@ -1,0 +1,9 @@
+{{- $bookingURL := "/kontakt/" }}
+{{- $bookingExternal := false }}
+{{- with .Site.Params.booking_url }}{{ $bookingURL = . }}{{ $bookingExternal = true }}{{ end }}
+<section class="cta-band" aria-label="Book tid hos Sanselig">
+  <div class="shell cta-band-inner">
+    <p class="cta-band-text">Klar til mere ro i kroppen?</p>
+    <a class="btn btn-primary" href="{{ $bookingURL }}"{{ if $bookingExternal }} target="_blank" rel="noopener noreferrer"{{ end }}>Book tid</a>
+  </div>
+</section>

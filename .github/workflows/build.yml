@@ -1,0 +1,38 @@
+name: Byg (pull request)
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  HUGO_VERSION: 0.152.0
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Installér Hugo
+        run: |
+          curl -sSLf -o /tmp/hugo.deb \
+            "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_${HUGO_VERSION}_linux-amd64.deb"
+          sudo dpkg -i /tmp/hugo.deb
+          hugo version
+
+      - name: Byg site
+        env:
+          TZ: Europe/Copenhagen
+        run: hugo --gc --minify --baseURL "https://www.sanselig.dk/"
+
+      - name: Fejl hvis Hugo skrev advarsler
+        run: |
+          hugo --gc --minify --printPathWarnings --logLevel warn 2>&1 | tee /tmp/hugo.log
+          if grep -qiE '^(WARN|ERROR)' /tmp/hugo.log; then
+            echo "::error::Hugo rapporterede advarsler eller fejl"
+            exit 1
+          fi

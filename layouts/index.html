@@ -1,0 +1,81 @@
+{{- define "main" }}
+{{- $bookingURL := "/kontakt/" }}
+{{- $bookingExternal := false }}
+{{- with .Site.Params.booking_url }}{{ $bookingURL = . }}{{ $bookingExternal = true }}{{ end }}
+
+<section class="hero">
+  <div class="shell hero-inner">
+    <div class="hero-text">
+      <h1>{{ .Params.hero_title | default .Title }}</h1>
+      {{- with .Params.hero_lead }}
+      <p class="hero-lead">{{ . }}</p>
+      {{- end }}
+      <div class="hero-actions">
+        {{- with .Params.hero_cta }}
+        <a class="btn btn-primary" href="{{ $bookingURL }}"{{ if $bookingExternal }} target="_blank" rel="noopener noreferrer"{{ end }}>{{ . }}</a>
+        {{- end }}
+        {{- with .Params.hero_cta_secondary }}
+        <a class="btn btn-secondary" href="{{ "/behandlinger/" | relLangURL }}">{{ . }}</a>
+        {{- end }}
+      </div>
+    </div>
+    <div class="hero-media">
+      <img src="{{ "img/hero-zoneterapi.jpg" | relURL }}" width="1600" height="753"
+           alt="Hænder der giver zoneterapi på en fod" fetchpriority="high" decoding="async">
+    </div>
+  </div>
+</section>
+
+{{- with .Site.Params.driftsnotits }}
+<div class="shell">
+  <p class="notice">{{ . }}</p>
+</div>
+{{- end }}
+
+{{- with .Content }}
+<section class="shell section">
+  <div class="prose">{{ . }}</div>
+</section>
+{{- end }}
+
+{{- $behandlinger := .Site.GetPage "/behandlinger" }}
+{{- with $behandlinger }}
+  {{- $subpages := .Pages.ByWeight }}
+  {{- if gt (len $subpages) 0 }}
+  <section class="shell section" aria-labelledby="behandlinger-heading">
+    <h2 id="behandlinger-heading">Find din behandling</h2>
+    <ul class="card-grid">
+      {{- range $subpages }}
+      <li class="card">
+        <h3 class="card-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+        {{- with .Params.summary }}
+        <p class="card-summary">{{ . }}</p>
+        {{- end }}
+        {{- with .Params.duration }}
+        <p class="card-duration">{{ . }}</p>
+        {{- end }}
+      </li>
+      {{- end }}
+    </ul>
+    <p><a class="link-more" href="{{ .RelPermalink }}">Se alle behandlinger og priser →</a></p>
+  </section>
+  {{- end }}
+{{- end }}
+
+{{- with .Site.Data.anbefalinger }}
+<section class="shell section" aria-labelledby="anbefalinger-heading">
+  <h2 id="anbefalinger-heading">Det siger mine klienter</h2>
+  <ul class="card-grid">
+    {{- range first 4 . }}
+    <li class="card">
+      <blockquote class="quote">{{ .quote }}</blockquote>
+      <p class="quote-meta">
+        {{- with .name }}<span class="quote-name">{{ . }}</span>{{ end }}
+        {{- with .topic }}<span class="chip">{{ . }}</span>{{ end }}
+      </p>
+    </li>
+    {{- end }}
+  </ul>
+</section>
+{{- end }}
+{{- end }}

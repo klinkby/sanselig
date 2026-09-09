@@ -1,0 +1,72 @@
+{{- define "main" }}
+{{- $base := "" }}
+{{- with .File }}{{ $base = .ContentBaseName }}{{ end }}
+{{- $isPriser := or (eq $base "priser") (eq .RelPermalink "/priser/") }}
+{{- $isKontakt := or (eq $base "kontakt") (eq .RelPermalink "/kontakt/") }}
+<article class="shell section">
+  <header class="page-header">
+    <h1>{{ .Title }}</h1>
+    {{- with .Params.lead }}
+    <p class="lede">{{ . }}</p>
+    {{- end }}
+  </header>
+
+  {{- if $isPriser }}
+  <div class="price-table-wrap">
+    <table class="price-table">
+      <caption class="visually-hidden">Priser for behandlinger hos Sanselig</caption>
+      <thead>
+        <tr>
+          <th scope="col">Behandling</th>
+          <th scope="col">Varighed</th>
+          <th scope="col">Pris</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{- range .Site.Data.priser }}
+        <tr>
+          <th scope="row">
+            {{ .treatment }}
+            {{- with .note }}<span class="price-note">{{ . }}</span>{{ end }}
+          </th>
+          <td>{{ .duration }}</td>
+          <td class="price-amount">{{ .price }} kr.</td>
+        </tr>
+        {{- end }}
+      </tbody>
+    </table>
+  </div>
+  {{- end }}
+
+  {{- with .Content }}
+  <div class="prose">
+    {{ . }}
+  </div>
+  {{- end }}
+
+
+  {{- if $isKontakt }}
+  <div class="contact-block">
+    <h2>Adresse</h2>
+    <address>
+      {{ .Site.Params.address_street }}, {{ .Site.Params.address_area }}<br>
+      {{ .Site.Params.address_postcode }} {{ .Site.Params.address_city }}
+    </address>
+    <ul class="contact-list">
+      {{- with .Site.Params.telefon }}
+      <li>Telefon og sms: <a href="tel:{{ $.Site.Params.telefon_tel }}">{{ $.Site.Params.telefon_display | default . }}</a></li>
+      {{- end }}
+      {{- with .Site.Params.email }}
+      <li>E-mail: <a href="mailto:{{ . }}">{{ . }}</a></li>
+      {{- end }}
+      {{- with .Site.Params.arbejdsdage }}
+      <li>{{ . }}</li>
+      {{- end }}
+      {{- with .Site.Params.mobilepay }}
+      <li>Betaling: kontant eller MobilePay {{ . }}</li>
+      {{- end }}
+    </ul>
+  </div>
+  {{- end }}
+</article>
+{{- end }}

@@ -1,0 +1,48 @@
+<footer class="site-footer">
+  <div class="shell footer-inner">
+    <div class="footer-block">
+      <p class="footer-brand">{{ .Site.Params.business_name }}</p>
+      <address>
+        {{ .Site.Params.address_street }}, {{ .Site.Params.address_area }}<br>
+        {{ .Site.Params.address_postcode }} {{ .Site.Params.address_city }}
+      </address>
+      {{- with .Site.Params.telefon }}
+      <p><a href="tel:{{ $.Site.Params.telefon_tel }}">{{ $.Site.Params.telefon_display | default . }}</a></p>
+      {{- end }}
+      {{- with .Site.Params.email }}
+      <p><a href="mailto:{{ . }}">{{ . }}</a></p>
+      {{- end }}
+      {{- with .Site.Params.arbejdsdage }}
+      <p>{{ . }}</p>
+      {{- end }}
+    </div>
+
+    <div class="footer-block">
+      <p class="footer-heading">Genveje</p>
+      <ul class="footer-social">
+        <li><a href="{{ "/priser/" | relURL }}">Priser</a></li>
+        <li><a href="{{ "/ofte-stillede-spoergsmaal/" | relURL }}">Ofte stillede spørgsmål</a></li>
+        <li><a href="{{ "/viden/" | relURL }}">Viden og guides</a></li>
+        <li><a href="{{ "/kontakt/" | relURL }}">Kontakt</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-block">
+      <p class="footer-heading">Følg med</p>
+      <ul class="footer-social">
+        {{- with .Site.Params.facebook_url }}
+        <li><a href="{{ . }}" rel="noopener noreferrer" target="_blank">Facebook</a></li>
+        {{- end }}
+        {{- with .Site.Params.instagram_url }}
+        <li><a href="{{ . }}" rel="noopener noreferrer" target="_blank">Instagram</a></li>
+        {{- end }}
+      </ul>
+    </div>
+
+    <div class="footer-block footer-legal">
+      <p>{{ .Site.Params.owner_name }} · {{ .Site.Params.owner_title }}</p>
+      <p>Zoneterapeut siden {{ .Site.Params.since_year }} · klinik på Islands Brygge siden {{ .Site.Params.clinic_since }}</p>
+      <p>&copy; {{ now.Year }} {{ .Site.Params.legal_name }}</p>
+    </div>
+  </div>
+</footer>

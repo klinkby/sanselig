@@ -1,0 +1,44 @@
+# Prices as published on Lise's own live booking system (www.sanselig.dk/booking).
+# Amounts are DKK. Payment by cash or MobilePay 616771.
+#
+# NOTE: her separate product catalogue lists "Øvre ryg - kort behandling" at 360
+# and telephone consultations at 320, which contradicts the booking system below.
+# The booking system is treated as authoritative because it is what clients
+# actually book through; the catalogue looks like a stale or discounted listing.
+# Confirm with Lise before launch.
+- treatment: "Zoneterapi til DIG"
+  note: "Voksne. Behandlingen tilpasses din krop og din situation."
+  duration: "45 min."
+  price: "530"
+- treatment: "Zoneterapi Gravid"
+  note: "Ekstra blid behandling, eller med fokus på fødslen."
+  duration: "45 min."
+  price: "530"
+- treatment: "Zoneterapi Teens"
+  note: "Mistrivsel, stress, smerter, hovedpine, fordøjelse. Bestilles i den unges navn."
+  duration: "45 min."
+  price: "530"
+- treatment: "Zoneterapi til baby (0–24 mdr.)"
+  note: "Starter med babytjek. God tid til amning og bleskift. Bestilles i barnets navn."
+  duration: "50 min."
+  price: "530"
+- treatment: "Zoneterapi til børn (2–12 år)"
+  note: "Individuelt tilpasset — nogle børn har brug for 20 minutter, andre for 45."
+  duration: "50 min."
+  price: "530"
+- treatment: "Zoneterapi til mor & baby"
+  note: "Behandling på mors fødder, mens baby ligger på maven. Begge får udbytte."
+  duration: "60 min."
+  price: "675"
+- treatment: "Zoneterapi, 2 søskende (0–12 år)"
+  note: "To børn, tilpasset hver enkelt."
+  duration: "60 min."
+  price: "675"
+- treatment: "Øvre ryg — kort behandling"
+  note: "Let massage af øvre ryg, skuldre og nakke samt cupping. Der gives ikke tilskud fra “danmark” til denne behandling."
+  duration: "35 min."
+  price: "550"
+- treatment: "Telefonkonsultation, børnesundhedsvejledning"
+  note: "Amning/erstatning, fordøjelse, eksem og trivsel. Jeg ringer dig op på aftalt tidspunkt."
+  duration: "60 min."
+  price: "600"

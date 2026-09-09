@@ -1,0 +1,28 @@
+<header class="site-header">
+  <div class="shell header-inner">
+    <a href="{{ .Site.Home.RelPermalink }}" class="brand">
+      <img src="{{ "img/logo-sanselig.png" | relURL }}" width="426" height="94"
+           alt="{{ .Site.Params.business_name | default .Site.Title }}">
+    </a>
+
+    <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="primary-nav">
+      <span class="nav-toggle-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Menu</span>
+    </button>
+
+    <nav id="primary-nav" class="primary-nav" aria-label="Primær navigation">
+      <ul>
+        {{- range .Site.Menus.main }}
+        {{- $url := .URL }}
+        {{- $active := or (eq $url $.RelPermalink) (and (ne $url "/") (strings.HasPrefix $.RelPermalink $url)) }}
+        <li><a href="{{ $url }}"{{ if $active }} aria-current="page"{{ end }}>{{ .Name }}</a></li>
+        {{- end }}
+      </ul>
+    </nav>
+
+    {{- $bookingURL := "/kontakt/" }}
+    {{- $bookingExternal := false }}
+    {{- with .Site.Params.booking_url }}{{ $bookingURL = . }}{{ $bookingExternal = true }}{{ end }}
+    <a class="btn btn-primary header-cta" href="{{ $bookingURL }}"{{ if $bookingExternal }} target="_blank" rel="noopener noreferrer"{{ end }}>Book tid</a>
+  </div>
+</header>

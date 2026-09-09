@@ -1,0 +1,42 @@
+{{- define "main" }}
+<section class="shell section page-header">
+  <h1>{{ .Title }}</h1>
+  {{- with .Content }}
+  <div class="prose">{{ . }}</div>
+  {{- end }}
+</section>
+
+<section class="shell section">
+  <ul class="card-grid">
+    {{- range .Pages.ByWeight }}
+    <li class="card">
+      <h2 class="card-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+
+      {{- $summary := .Params.summary }}
+      {{- if not $summary }}{{ $summary = .Summary }}{{ end }}
+      {{- with $summary }}
+      <p class="card-summary">{{ . }}</p>
+      {{- end }}
+
+      {{- with .Params.symptoms }}
+      <ul class="chips">
+        {{- range . }}
+        <li class="chip">{{ . }}</li>
+        {{- end }}
+      </ul>
+      {{- end }}
+
+      {{- with .Params.duration }}
+      <p class="card-duration">{{ . }}</p>
+      {{- end }}
+
+      {{- $cta := .Params.cta | default "Book tid" }}
+      {{- $bookingURL := "/kontakt/" }}
+      {{- $bookingExternal := false }}
+      {{- with $.Site.Params.booking_url }}{{ $bookingURL = . }}{{ $bookingExternal = true }}{{ end }}
+      <a class="btn btn-primary card-cta" href="{{ $bookingURL }}"{{ if $bookingExternal }} target="_blank" rel="noopener noreferrer"{{ end }}>{{ $cta }}</a>
+    </li>
+    {{- end }}
+  </ul>
+</section>
+{{- end }}
