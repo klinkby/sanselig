@@ -10,6 +10,7 @@
        actual <script> element so the two can never drift apart. */ -}}
 {{- $ldjson := trim (printf "%s" (partial "jsonld.html" .)) " \n\t\r" -}}
 {{- $scriptSrc := "'self'" -}}
+{{- $styleSrc := "'self'" -}}
 {{- $ldIntegrity := "" -}}
 {{- if $ldjson -}}
   {{- $slug := "page" -}}
@@ -24,9 +25,20 @@
   {{- $scriptSrc = printf "'self' '%s'" $ldIntegrity -}}
 {{- end -}}
 
+{{- /* The whole stylesheet is inlined below (it is only a few KB) so no
+       render-blocking CSS request is needed. It is minified and fingerprinted
+       here so its SHA-256 can go into the CSP style-src — the same hash-based
+       approach used for the inline JSON-LD above — keeping style-src strict
+       without 'unsafe-inline'. */ -}}
+{{- $css := "" -}}
+{{- with resources.Get "css/main.css" -}}
+  {{- $css = . | minify | fingerprint "sha256" -}}
+  {{- $styleSrc = printf "'%s'" $css.Data.Integrity -}}
+{{- end -}}
+
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; style-src 'self'; script-src {{ $scriptSrc }}">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; style-src {{ $styleSrc }}; script-src {{ $scriptSrc }}">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 {{- if .Site.Params.noindex }}
 <meta name="robots" content="noindex, nofollow">
@@ -66,9 +78,8 @@
 <meta name="twitter:description" content="{{ . }}">
 {{- end }}
 
-{{- with resources.Get "css/main.css" }}
-{{- $css := . | minify | fingerprint "sha384" }}
-<link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}" crossorigin="anonymous">
+{{- with $css }}
+<style>{{ .Content | safeCSS }}</style>
 {{- end }}
 
 {{- if $ldjson }}
