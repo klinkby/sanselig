@@ -1,5 +1,5 @@
 baseURL = "https://beta.sanselig.dk/"
-languageCode = "da-dk"
+locale = "da-dk"
 defaultContentLanguage = "da"
 title = "sanselig.dk — zoneterapi på Islands Brygge"
 copyright = "Sanselig.dk ApS"
