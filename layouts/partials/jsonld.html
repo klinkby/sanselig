@@ -59,7 +59,7 @@
 {{- with .File }}{{ $base = .ContentBaseName }}{{ end -}}
 {{- if eq $base "priser" -}}
   {{- $items := slice -}}
-  {{- range $i, $r := .Site.Data.priser -}}
+  {{- range $i, $r := hugo.Data.priser -}}
     {{- $items = $items | append (dict
         "@type" "Offer"
         "position" (add $i 1)
