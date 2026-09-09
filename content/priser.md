@@ -30,5 +30,4 @@ Du melder afbud på telefon eller sms 40 56 42 01 eller mail@sanselig.dk.
 ## Gavekort
 
 Kender du en, som skal forkæles, kan du købe et gavekort. Skriv til mail@sanselig.dk eller ring på
-40 56 42 01, og lad mig vide lidt om, hvem gavekortet skal gives til — så pakker jeg det gerne ind.
-Det kan sendes, eller du kan hente det i klinikken.
+40 56 42 01 — så pakker jeg det gerne ind. Det kan sendes, eller du kan hente det i klinikken.
