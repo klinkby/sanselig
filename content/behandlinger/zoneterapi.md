@@ -14,7 +14,6 @@ symptoms:
   - "Søvn"
   - "Smerter og spændinger"
   - "Autoimmune reaktioner"
-  - "Fertilitet"
 draft: false
 ---
 

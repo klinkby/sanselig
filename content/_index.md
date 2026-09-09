@@ -8,7 +8,7 @@ hero_cta_secondary: "Se behandlinger"
 draft: false
 ---
 
-## Jeg har god erfaring med tunge symptomer
+## Jeg har erfaring med zoneterapi i komplekse og ved kroniske sygdomsforløb
 
 Jeg har mange års erfaring med zoneterapi — også ved tungere symptomer som kronisk sygdom,
 autoimmune reaktioner, stress, fordøjelsesproblemer og skader på bevægeapparatet. Dertil
