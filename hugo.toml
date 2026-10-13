@@ -107,7 +107,6 @@ summaryLength = 30
   # Site-wide notice from her live booking page. Set to "" to remove the banner.
   driftsnotits = "Klinikken har begrænsede åbningstider i hele 2026. Skriv eller ring, så finder vi en tid — eller kom på ventelisten."
 
-  # TODO: her online booking system has no public URL yet (her old "bestil tid"
-  # page reads "Denne side skal slettes når der kommer booking"). Until a real
-  # booking link exists, every "Book tid" button falls back to /kontakt/.
-  booking_url = ""
+  # Every "Book tid" button links here (opens in a new tab). Empty string falls
+  # back to /kontakt/.
+  booking_url = "https://sanselig.booqr.dk/"
