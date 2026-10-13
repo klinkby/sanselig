@@ -101,9 +101,6 @@ og www kan ikke køre samtidig fra dette repo.
 
 ## Mangler afklaring
 
-- **Booking.** Der findes endnu ikke et offentligt booking-link. Indtil
-  `booking_url` i `hugo.toml` udfyldes, peger alle "Book tid"-knapper på
-  `/kontakt/`, hvor telefon og mail står.
 - **To modstridende priser.** Booking-systemet angiver "Øvre ryg" til 550 kr. og
   telefonkonsultation til 600 kr., mens varekataloget siger 360 kr. og 320 kr.
   Priserne i `data/priser.yaml` følger booking-systemet. Skal bekræftes.
