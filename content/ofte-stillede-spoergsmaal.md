@@ -74,7 +74,7 @@ Er du i tvivl, så ring eller skriv. Så finder vi ud af det.
 
 ## Kan jeg aflyse en behandling?
 
-Afbud skal meldes senest 8 timer inden behandlingen. Udeblivelse eller for sent afbud faktureres
+Afbud skal meldes senest dagen før behandlingen. Udeblivelse eller for sent afbud uden gyldig grund faktureres
 med 300 kr., med mindre andet er aftalt.
 
 Du aflyser på telefon eller sms 40 56 42 01 eller mail@sanselig.dk.
