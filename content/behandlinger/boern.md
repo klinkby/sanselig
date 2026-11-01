@@ -3,7 +3,7 @@ title: "Zoneterapi til børn og teens"
 description: "Zoneterapi til børn 2-10 år og teens på Islands Brygge. Ved uro, koncentration, mistrivsel, fordøjelse, søvn og smerter. Altid på barnets præmisser."
 summary: "Til børn fra 2 år og til teens. Behandlingen tilpasses helt til barnet — nogle har brug for 20 minutter, andre for 45."
 weight: 40
-duration: "45-50 min."
+duration: "20-45 min."
 cta: "Bestil tid"
 symptoms:
   - "Uro i nervesystemet"
