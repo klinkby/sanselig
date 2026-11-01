@@ -34,5 +34,4 @@ Du kan købe varer med, når du er til behandling, men du må også komme og han
 Bestiller du noget, jeg ikke har på hylderne, skaffer jeg det gerne hjem — eller henviser dig
 videre.
 
-Butikkens åbningstider varierer i tidsrummet 8-21 på hverdage og i weekender. Vil du være sikker
-på at møde en åben dør, så ring først.
+Butikkens åbningstider varierer, så vil du være sikker på at møde en åben dør, så ring/ skriv først.
