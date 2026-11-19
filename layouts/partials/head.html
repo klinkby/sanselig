@@ -1,7 +1,9 @@
 {{- $site := .Site -}}
 {{- $bizName := $site.Params.business_name | default $site.Title -}}
 {{- $title := $site.Title -}}
-{{- if not .IsHome -}}
+{{- if eq .Kind "404" -}}
+  {{- $title = printf "Siden blev ikke fundet · %s" $bizName -}}
+{{- else if not .IsHome -}}
   {{- $title = printf "%s · %s" .Title $bizName -}}
 {{- end -}}
 {{- $description := .Description -}}
@@ -40,7 +42,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; style-src {{ $styleSrc }}; script-src {{ $scriptSrc }}">
 <meta name="referrer" content="strict-origin-when-cross-origin">
-{{- if .Site.Params.noindex }}
+{{- if or .Site.Params.noindex (eq .Kind "404") }}
 <meta name="robots" content="noindex, nofollow">
 {{- end }}
 
