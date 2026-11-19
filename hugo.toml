@@ -66,7 +66,7 @@ summaryLength = 30
 [params]
   # Beta-sitet må ikke indekseres — det ville konkurrere med det live
   # sanselig.dk om de samme tekster. Sæt til false ved skift til www.
-  noindex = true
+  noindex = false
 
   business_name = "sanselig.dk"
   legal_name    = "sanselig.dk ApS"
