@@ -49,6 +49,8 @@
 <meta name="description" content="{{ . }}">
 {{- end }}
 <link rel="canonical" href="{{ .Permalink }}">
+<link rel="icon" href="{{ "favicon.ico" | relURL }}" sizes="16x16 32x32 48x48">
+<link rel="apple-touch-icon" href="{{ "apple-touch-icon.png" | relURL }}">
 
 {{- /* Warm the LCP hero image as early as possible; only the home page has one.
        Widths/sizes/srcset come from the same partials index.html uses to build
